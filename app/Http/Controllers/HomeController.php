@@ -8,7 +8,7 @@ use App\Models\Post;
 class HomeController extends Controller
 {
     public function index() {
-        $posts = Post::orderBy('id', 'DESC')->paginate(3);
+        $posts = Post::with('user')->orderByDesc('id')->paginate(3);
 
         return view('index', ['page' => 'main', 'posts' => $posts]);
     }

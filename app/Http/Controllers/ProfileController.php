@@ -9,7 +9,7 @@ use App\Models\Post;
 class ProfileController extends Controller
 {
     public function index() {
-        $posts = Post::where('user_id', Auth::id())->orderBy('id', 'DESC')->paginate(3);
+        $posts = Post::with('user')->whereBelongsTo(Auth::user())->orderByDesc('id')->paginate(3);
 
         return view('index', ['page' => 'profile', 'posts' => $posts]);
     }

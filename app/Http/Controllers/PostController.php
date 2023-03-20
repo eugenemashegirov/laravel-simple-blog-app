@@ -22,14 +22,14 @@ class PostController extends Controller
     }
 
     public function show(string $id) {
-        $post = Post::where('id', $id)->firstOrFail();
+        $post = Post::with('user')->findOrFail($id);
         
         return view('index', ['page' => 'post', 'post' => $post]);
     }
 
     public function update(PostRequest $request, string $id) {
         $validatedData = $request->validated();
-        $post = Post::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $post = Post::whereBelongsTo(Auth::user())->findOrFail($id);
 
         if (($post->title === $validatedData['title']) && ($post->text === $validatedData['text'])) {
             return response()->json(['info' => 'Nothing to update'], 201);
@@ -49,7 +49,7 @@ class PostController extends Controller
     }
 
     public function destroy(string $id) {
-        Post::where('id', $id)->where('user_id', Auth::id())->firstOrFail()->delete();
+        Post::whereBelongsTo(Auth::user())->findOrFail($id)->delete();
 
         return response()->json(['success' => true], 201);
     }
