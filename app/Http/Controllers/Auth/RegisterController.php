@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -20,10 +19,12 @@ class RegisterController extends Controller
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        if (Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
-            return response()->json(['user' => Auth::user()], 201);
+        if (auth()->attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
+            $request->session()->regenerate();
+
+            return response()->json(['user' => auth()->user()], 201);
         }
 
-        return response()->json(['success' => false], 400);
+        return response()->json(['success' => false], 404);
     }
 }

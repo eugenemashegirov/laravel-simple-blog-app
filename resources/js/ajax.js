@@ -1,7 +1,5 @@
 $(function() {
-    $(".alert").css("display", "none");
-
-    $("#registerForm").submit(function(e) {
+    $("#registerForm").on("submit", function(e) {
         e.preventDefault();
 
         let registerData = {
@@ -21,14 +19,18 @@ $(function() {
                 "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content")
             }
         }).done(function(data) {
+            $("#registerAlert").removeClass("alert alert-danger");
+            $("#registerAlert").addClass("alert alert-success");
+            $("#registerAlert").html("Success!");
+
             window.location.href="/profile";
         }).fail(function(data) {
-            $("#registerAlert").css("display", "block");
+            $("#registerAlert").addClass("alert alert-danger");
             $("#registerAlert").html(getStatusAndText(data));
         });
     });
 
-    $("#loginForm").submit(function(e) {
+    $("#loginForm").on("submit", function(e) {
         e.preventDefault();
 
         let registerData = {
@@ -46,18 +48,22 @@ $(function() {
                 "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content")
             }
         }).done(function(data) {
+            $("#loginAlert").removeClass("alert alert-danger");
+            $("#loginAlert").addClass("alert alert-success");
+            $("#loginAlert").html("Success!");
+
             window.location.href="/profile";
         }).fail(function(data) {
-            $("#loginAlert").css("display", "block");
+            $("#loginAlert").addClass("alert alert-danger");
             $("#loginAlert").html(getStatusAndText(data));
         });
     });
 
-    $("#logout").click(function(e) {
+    $("#logout").on("click", function(e) {
         e.preventDefault();
 
         $.ajax({
-            type: "GET",
+            type: "DELETE",
             url: "/logout",
             dataType: "json",
             headers: {
@@ -68,7 +74,7 @@ $(function() {
         });
     });
 
-    $("#postForm").submit(function(e) {
+    $("#postForm").on("submit", function(e) {
         e.preventDefault();
 
         let registerData = {
@@ -85,15 +91,19 @@ $(function() {
                 "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content")
             }
         }).done(function(data) {
+            $("#postAlert").removeClass("alert alert-danger");
+            $("#postAlert").addClass("alert alert-success");
+            $("#postAlert").html("Success!");
+
             window.location.href="/profile";
         }).fail(function(data) {
-            $("#postAlert").css("display", "block");
+            $("#postAlert").addClass("alert alert-danger");
             $("#postAlert").html(getStatusAndText(data));
         });
     });
 
 
-    $("#editForm").submit(function(e) {
+    $("#editForm").on("submit", function(e) {
         e.preventDefault();
 
         let registerData = {
@@ -110,14 +120,18 @@ $(function() {
                 "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content")
             }
         }).done(function(data) {
-            window.location.href="/";
+            $("#editAlert").removeClass("alert alert-danger");
+            $("#editAlert").addClass("alert alert-success");
+            $("#editAlert").html("Success!");
+
+            window.location.href="/profile";
         }).fail(function(data) {
-            $("#editAlert").css("display", "block");
+            $("#editAlert").addClass("alert alert-danger");
             $("#editAlert").html(getStatusAndText(data));
         });
     });
 
-    $("#deleteForm").submit(function(e) {
+    $("#deleteForm").on("submit", function(e) {
         e.preventDefault();
 
         $.ajax({
@@ -128,7 +142,7 @@ $(function() {
                 "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content")
             }
         }).done(function(data) {
-            window.location.href="/";
+            window.location.href="/profile";
         });
     });
 });

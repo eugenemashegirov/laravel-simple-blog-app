@@ -11,8 +11,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import 'bootstrap';
 
-import $ from 'jquery';
-window.$ = $;
+import jQuery from 'jquery';
+window.$ = jQuery;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

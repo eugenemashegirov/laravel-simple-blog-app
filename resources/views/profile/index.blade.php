@@ -1,4 +1,4 @@
-<main>
+<x-app-layout>
     <section class="cta-section bg-light py-5">
         <div class="container text-center">
             <h2>Hello, {{ auth()->user()->name }}!</h2>
@@ -11,36 +11,37 @@
         <div class="container">
             <h3 class="text-center mb-3">Your posts</h3>
             @if(count($posts))
-            @foreach ($posts as $post)
-            <div class="d-flex justify-content-center">
-                <div class="item mb-5">
-                    <h3 class="mb-1">{{ $post->title }}</h3>
-                    <div class="meta">
-                        <span class="author">
-                            Posted by {{ $post->user->name }}
-                        </span>
-                        <span class="date">
-                            {{ date('d.m.Y H:i', strtotime($post->created_at)) }}
-                        </span>
+                @foreach ($posts as $post)
+                    <div class="d-flex justify-content-center">
+                        <div class="item mb-5">
+                            <h3 class="mb-1">{{ $post->title }}</h3>
+                            <div class="meta">
+                                <span class="author">
+                                    Posted by {{ $post->user->name }}
+                                </span>
+                                <span class="date">
+                                    {{ date('d.m.Y H:i', strtotime($post->created_at)) }}
+                                </span>
+                            </div>
+                            @if(strlen($post->text) > 200)
+                                <div class="intro">
+                                    {{ substr($post->text, 0, 200) . '...' }}
+                                </div>
+                            @else
+                                <div class="intro">
+                                    {{ $post->text }}
+                                </div>
+                            @endif
+
+                            <a class="more-link" href="{{ '/posts/' . $post->id }}">Read more →</a>
+                        </div>
                     </div>
-                    @if(strlen($post->text) > 200)
-                    <div class="intro">
-                        {{ substr($post->text, 0, 200) . '...' }}
-                    </div>
-                    @else
-                    <div class="intro">
-                        {{ $post->text }}
-                    </div>
-                    @endif
-                    <a class="more-link" href="{{ '/posts/' . $post->id }}">Read more →</a>
+                @endforeach
+                <div class="d-flex justify-content-center">
+                    {{ $posts->links() }}
                 </div>
-            </div>
-            @endforeach
-            <div class="d-flex justify-content-center">
-                {{ $posts->links() }}
-            </div>
             @else
-            <p class="fs-3 text-center" style="color: rgba(0, 0, 0, .3);">Nothing published</p>
+                <p class="fs-3 text-center" style="color: rgba(0, 0, 0, .3);">Nothing published</p>
             @endif
         </div>
     </section>
@@ -64,7 +65,7 @@
                             <textarea required class="form-control" id="post-text" placeholder="Your text" rows="12"></textarea>
                         </div>
                     </form>
-                    <div id="postAlert" class="alert alert-danger" role="alert"></div>
+                    <div id="postAlert" role="alert"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -73,4 +74,4 @@
             </div>
         </div>
     </div>
-</main>
+</x-app-layout>
